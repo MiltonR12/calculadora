@@ -6,12 +6,14 @@ function App() {
 
   const [valor, setvalor] = useState('')
 
-  const handleChange = (e) => {
-    setvalor(e.target.value)
-  }
-
   const handleClick = (presionado) => {
-    setvalor(valor + presionado)
+    if (presionado != valor[valor.length - 1]) {
+      setvalor(valor + presionado)
+    } else {
+      if (/[0-9]/.test(presionado)) {
+        setvalor(valor + presionado)
+      }
+    }
   }
 
   const igual = () => {
@@ -19,9 +21,9 @@ function App() {
     let operador = ''
     let resultado = 0
     for (let i = 0; i < valor.length; i++) {
-      if (['+', '-', '/', '*'].includes(valor[i]) || i == valor.length - 1 ) {
+      if (['+', '-', '/', '*'].includes(valor[i]) || i == valor.length - 1) {
         if (i == valor.length - 1) {
-          num = (num*10) + parseInt(valor[i])
+          num = (num * 10) + parseInt(valor[i])
         }
         switch (operador) {
           case '+':
@@ -47,44 +49,51 @@ function App() {
         num = 0
         operador = valor[i]
       } else {
-        num = (num*10) + parseInt(valor[i])
+        num = (num * 10) + parseInt(valor[i])
       }
     }
+    console.log(valor);
+  }
+
+  const vaciar = () => {
+    setvalor('')
   }
 
   return (
     <div className={estilos.app} >
+      <h1>Calculadora</h1>
       <div className={estilos.contCalculadora} >
         <div className={estilos.parte} >
           <input
             type="text"
             placeholder='0'
             className={estilos.cuadro}
-            onChange={handleChange}
             value={valor}
+            disabled
           />
         </div>
         <div className={estilos.parte} >
           <Boton handleClick={handleClick} >1</Boton>
           <Boton handleClick={handleClick} >2</Boton>
           <Boton handleClick={handleClick} >3</Boton>
-          <Boton handleClick={handleClick} >+</Boton>
+          <Boton vaciar={vaciar} >C</Boton>
         </div>
         <div className={estilos.parte} >
           <Boton handleClick={handleClick} >4</Boton>
           <Boton handleClick={handleClick} >5</Boton>
           <Boton handleClick={handleClick} >6</Boton>
-          <Boton handleClick={handleClick} >-</Boton>
+          <Boton handleClick={handleClick} >+</Boton>
         </div>
         <div className={estilos.parte} >
           <Boton handleClick={handleClick} >7</Boton>
           <Boton handleClick={handleClick} >8</Boton>
           <Boton handleClick={handleClick} >9</Boton>
-          <Boton handleClick={handleClick} >*</Boton>
+          <Boton handleClick={handleClick} >-</Boton>
         </div>
         <div className={estilos.parte} >
           <Boton handleClick={handleClick} >0</Boton>
           <Boton handleClick={handleClick} >/</Boton>
+          <Boton handleClick={handleClick} >*</Boton>
           <Boton igual={igual} >=</Boton>
         </div>
       </div>
